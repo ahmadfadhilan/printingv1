@@ -8,10 +8,10 @@
 6. Masukkan tabel yang ada ke database dengan [ php artisan migrate --seed ]
 6. Terakhir bisa dilihat dengan cara [ php artisan serve ]
 7. Untuk mengcommit dan mempush, pertama buat branch baru
-    a. [git branch (nama branch)] -> membuat branch
-    b. [git branch -a] -> melihat branch yang ada
-    c. [git checkout (nama branch)]-> merubah ke branch yang di inginkan 
-    d. [git status] -> untuk melihat file yang berubah yaitu file yang berwarna merah
-    e. [git add .]  -> untuk meng add sehingga file berwana merah akan menjadi hijau
-    f. [git commit -m "(judul commit)"] -> meng commit 
-    g. [git push --set-upstream origin (nama branch)] -> untuk meng upload ke github
+8. [git branch (nama branch)] -> membuat branch
+9. [git branch -a] -> melihat branch yang ada
+10. [git checkout (nama branch)]-> merubah ke branch yang di inginkan 
+11. [git status] -> untuk melihat file yang berubah yaitu file yang berwarna merah
+12. [git add .]  -> untuk meng add sehingga file berwana merah akan menjadi hijau
+13. [git commit -m "(judul commit)"] -> meng commit 
+14. [git push --set-upstream origin (nama branch)] -> untuk meng upload ke github
