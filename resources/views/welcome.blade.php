@@ -1,92 +1,85 @@
-<!doctype html>
-<html lang="{{ app()->getLocale() }}">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en">
 
-        <title>Home</title>
+  <head>
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+    <title>Home</title>
 
-            .full-height {
-                height: 100vh;
-            }
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+    <!-- Custom fonts for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet" type="text/css">
 
-            .position-ref {
-                position: relative;
-            }
+    <!-- Custom styles for this template -->
+    <link href="css/coming-soon.min.css" rel="stylesheet">
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+  </head>
 
-            .content {
-                text-align: center;
-            }
+    <style>
+    .right {
+        position: absolute;
+        right: 100px;
+        padding: 10px;
+    }
+    .links > a {
+        color: white;
+        padding: 0 25px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .1rem;
+        text-decoration: none;
+        text-transform: uppercase;                                               
+    }  
+    .bg {
+        position: fixed;
+        z-index: 1;
+        float: left;
+        left: 0;
+        } 
+    </style>
 
-            .title {
-                font-size: 84px;
-            }
+  <body>
 
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
+    
+        <img src="img/lea.png" alt="gambar" class="bg" />
+    
+    
+    
+    <div class="masthead right">
+      <div class="masthead-bg"></div>
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-12 my-auto">
+            <div class="masthead-content text-white py-5 py-md-0">
+              <h1 class="mb-3">Wellcome</h1>
+              <div class="links position-ref">
+                    <a class="btn btn-secondary" href="{{ route('transaksi.index') }}">Transaksi</a>
+                    <a class="btn btn-secondary" href="{{ route('laporan.index') }}">Laporan</a>
                 </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Wellcome
-                </div>
-
-                <div class="links">
-                    <a href="{{ route('transaksi') }}">Transaksi</a>
-                    <a href="{{ route('laporan') }}">Laporan</a>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </body>
+      </div>
+    </div>
+
+    
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="jquery/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="js/coming-soon.min.js"></script>
+
+  </body>
+
 </html>

@@ -18,11 +18,9 @@ class CreateTransaksisTable extends Migration
             $table->string('nama_printing');
             $table->integer('total');
             $table->integer('id_asisten')->unsigned();
-            $table->integer('id_print')->unsigned();
             $table->timestamps();
 
             $table->foreign('id_asisten')->references('id_asisten')->on('asistens');
-            $table->foreign('id_print')->references('id_print')->on('prints');
         });
     }
 

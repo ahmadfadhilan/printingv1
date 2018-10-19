@@ -14,8 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/transaksi','TransaksiController@index')->name('transaksi');
-Route::get('/laporan','LaporanController@index')->name('laporan');
+Route::resource('transaksi', 'TransaksiController');
+Route::resource('laporan', 'LaporanController');
+Route::resource('home', 'HomeController');
 
 

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Transaksi;
+use App\Hutang;
+use App\Asisten;
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use DB;
 
 class TransaksiController extends Controller
 {
@@ -13,10 +17,20 @@ class TransaksiController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+
+        $hutang = DB::table('hutangs')
+        ->join('transaksis', 'transaksis.id_trans', '=', 'hutangs.id_trans')
+        ->join('asistens', 'transaksis.id_asisten', '=', 'asistens.id_asisten')
+        ->get();
+
+       
         $transaksi = Transaksi::all();
-        return view('transaksi',['transaksi'=>$transaksi]);
+        $asisten = Asisten::pluck('nama','id_asisten');
+        return view('transaksi', ['transaksi'=> $transaksi], compact('hutang','asisten'));
     }
+
+    
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +50,26 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        // $request->validate([
+
+        //     'id_trans'=> 'required',
+        //     'nama_printing'=> 'required',
+        //     'total'=> 'required',
+        //     'id_asisten'=> 'required'
+                      
+        //   ]);
+    
+            $transaksi = new Transaksi();
+            
+            $transaksi->nama_printing = $request->input('nama_printing');
+            $transaksi->total = $request->input('total');
+            $transaksi->id_asisten = $request->input('id_asisten');
+            
+           
+            $transaksi->save();
+
+            return redirect()->route('transaksi.index');
     }
 
     /**
