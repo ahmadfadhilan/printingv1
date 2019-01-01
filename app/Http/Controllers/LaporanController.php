@@ -1,8 +1,15 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Transaksi;
+use App\Hutang;
+use App\Asisten;
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use DB;
 
 class LaporanController extends Controller
 {
@@ -13,8 +20,15 @@ class LaporanController extends Controller
      */
     public function index()
     {
+        $hutang = DB::table('hutangs')
+        ->join('transaksis', 'transaksis.id_trans', '=', 'hutangs.id_trans')
+        ->join('asistens', 'transaksis.id_asisten', '=', 'asistens.id_asisten')
+        ->get();
 
-        return view('laporan');
+        $transaksi = Transaksi::all();
+
+        $asisten = Asisten::pluck('nama','id_asisten');
+        return view('laporan', ['transaksi'=> $transaksi,'transaksi_2'=> $transaksi,'transaksi_3'=> $transaksi,'transaksi_4'=> $transaksi,], compact('hutang','asisten'));
     }
 
     /**

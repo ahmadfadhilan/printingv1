@@ -15,8 +15,11 @@ class CreateTransaksisTable extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->increments('id_trans');
-            $table->string('nama_printing');
+            $table->string('kustomer');
+            $table->string('hitam');
+            $table->string('warna');
             $table->integer('total');
+            $table->integer('pembayaran');
             $table->integer('id_asisten')->unsigned();
             $table->timestamps();
 

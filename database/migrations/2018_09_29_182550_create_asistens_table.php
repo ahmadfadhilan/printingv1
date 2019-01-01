@@ -16,7 +16,7 @@ class CreateAsistensTable extends Migration
         Schema::create('asistens', function (Blueprint $table) {
             $table->increments('id_asisten');
             $table->string('nama');
-            $table->timestamps();
+            $table->string('timestamp');
         });
     }
 

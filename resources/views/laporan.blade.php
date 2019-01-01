@@ -1,8 +1,27 @@
+@php
+    use Carbon\Carbon;
+    $end_month = Carbon::now()->endOfMonth();    
+    $str_month = Carbon::now()->startOfMonth();
+
+    $end_week = Carbon::now('Asia/Jakarta')->endOfWeek();     
+    $str_week = Carbon::now('Asia/Jakarta')->startOfWeek();
+
+    $end_year = Carbon::now()->endOfYear();     
+    $str_year = Carbon::now()->startOfYear();     
+
+    var_dump($end_month);
+    var_dump($str_month);
+    var_dump($end_week);
+    var_dump($str_week);
+    var_dump($end_year);
+    var_dump($str_year);
+    
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
   <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -46,8 +65,8 @@
       </div>
     </nav>
 
-    <!-- Header -->
-    <header class="masthead bg-primary text-white text-center portfolio">
+  <!-- Header -->
+  <header class="masthead bg-primary text-white text-center portfolio">
       <div class="container">
         <h1 class="text-center text-uppercase text-secondary mb-0">Laporan</h1>
         <hr class="star-light">
@@ -122,7 +141,43 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Harian</h2>
               <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/report_day.png" alt="">
+                <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Nama Kostumer</th>
+                      <th>Nama Asisten</th>
+                      <th>Hitam</th>
+                      <th>Warna</th>
+                      <th>Total Biaya</th>
+                      <th>Uang yang Dibayar</th>
+                      <th>status</th>
+                    </tr>
+                </thead>
+
+                  <tbody>
+                    @foreach($transaksi as $transaksi)
+                      @if($transaksi->created_at->ToDateString() ==  Carbon::today('Asia/Jakarta')->ToDateString())
+                        <tr>
+                          <td>{{ $transaksi->id_trans }}</td>         
+                          <td>{{ $transaksi->kustomer}}</td>
+                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
+                          <td>{{$transaksi->hitam}}</td>
+                          <td>{{$transaksi->warna}}</td> 
+                          <td>{{ $transaksi->total }}</td>
+                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>
+                            @if ($transaksi->pembayaran > $transaksi->total)
+                                Lunas
+                            @else
+                                Belum Lunas
+                            @endif
+                          </td>
+                        </tr>
+                      @endif
+                    @endforeach
+                  </tbody>            
+                </table>
               <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
@@ -144,7 +199,45 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Mingguan</h2>
               <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/report_week.png" alt="">
+              <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Nama Kostumer</th>
+                      <th>Nama Asisten</th>
+                      <th>Tanggal</th>
+                      <th>Hitam</th>
+                      <th>Warna</th>
+                      <th>Total Biaya</th>
+                      <th>Uang yang Dibayar</th>
+                      <th>status</th>
+                    </tr>
+                </thead>
+
+                  <tbody>
+                    @foreach($transaksi_2 as $transaksi)
+                      @if($transaksi->created_at <= $end_week && $transaksi->created_at >= $str_week)
+                        <tr>
+                          <td>{{ $transaksi->id_trans }}</td>         
+                          <td>{{ $transaksi->kustomer}}</td>
+                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
+                          <td>{{ $transaksi->created_at->ToDateString() }}</td>
+                          <td>{{$transaksi->hitam}}</td>
+                          <td>{{$transaksi->warna}}</td> 
+                          <td>{{ $transaksi->total }}</td>
+                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>
+                            @if ($transaksi->pembayaran > $transaksi->total)
+                                Lunas
+                            @else
+                                Belum Lunas
+                            @endif
+                          </td>
+                        </tr>
+                      @endif
+                    @endforeach
+                  </tbody>            
+                </table>
               <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
@@ -166,7 +259,45 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Bulanan</h2>
               <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/report_month.png" alt="">
+              <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Nama Kostumer</th>
+                      <th>Nama Asisten</th>
+                      <th>Tanggal</th>
+                      <th>Hitam</th>
+                      <th>Warna</th>
+                      <th>Total Biaya</th>
+                      <th>Uang yang Dibayar</th>
+                      <th>status</th>
+                    </tr>
+                </thead>
+
+                  <tbody>
+                    @foreach($transaksi_3 as $transaksi)
+                      @if($transaksi->created_at <= $end_month && $transaksi->created_at >= $str_month)
+                        <tr>
+                          <td>{{ $transaksi->id_trans }}</td>         
+                          <td>{{ $transaksi->kustomer}}</td>
+                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
+                          <td>{{ $transaksi->created_at->ToDateString() }}</td>
+                          <td>{{$transaksi->hitam}}</td>
+                          <td>{{$transaksi->warna}}</td> 
+                          <td>{{ $transaksi->total }}</td>
+                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>
+                            @if ($transaksi->pembayaran > $transaksi->total)
+                                Lunas
+                            @else
+                                Belum Lunas
+                            @endif
+                          </td>
+                        </tr>
+                      @endif
+                    @endforeach
+                  </tbody>            
+                </table>
               <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
@@ -188,7 +319,45 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Tahunan</h2>
               <hr class="star-dark mb-5">
-              <img class="img-fluid mb-5" src="img/portfolio/report_year.png" alt="">
+              <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Nama Kostumer</th>
+                      <th>Nama Asisten</th>
+                      <th>Tanggal</th>
+                      <th>Hitam</th>
+                      <th>Warna</th>
+                      <th>Total Biaya</th>
+                      <th>Uang yang Dibayar</th>
+                      <th>status</th>
+                    </tr>
+                </thead>
+
+                  <tbody>
+                    @foreach($transaksi_4 as $transaksi)
+                      @if($transaksi->created_at <= $end_year && $transaksi->created_at >= $str_year)
+                        <tr>
+                          <td>{{ $transaksi->id_trans }}</td>         
+                          <td>{{ $transaksi->kustomer}}</td>
+                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
+                          <td>{{ $transaksi->created_at->ToDateString() }}</td>
+                          <td>{{$transaksi->hitam}}</td>
+                          <td>{{$transaksi->warna}}</td> 
+                          <td>{{ $transaksi->total }}</td>
+                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>
+                            @if ($transaksi->pembayaran > $transaksi->total)
+                                Lunas
+                            @else
+                                Belum Lunas
+                            @endif
+                          </td>
+                        </tr>
+                      @endif
+                    @endforeach
+                  </tbody>            
+                </table>
               <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>

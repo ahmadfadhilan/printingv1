@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Transaksi;
 use App\Hutang;
 use App\Asisten;
@@ -24,14 +24,14 @@ class TransaksiController extends Controller
         ->join('asistens', 'transaksis.id_asisten', '=', 'asistens.id_asisten')
         ->get();
 
-       
         $transaksi = Transaksi::all();
         $asisten = Asisten::pluck('nama','id_asisten');
         return view('transaksi', ['transaksi'=> $transaksi], compact('hutang','asisten'));
+        
     }
 
     
-
+ 
     /**
      * Show the form for creating a new resource.
      *
@@ -50,26 +50,34 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        
-        // $request->validate([
+           $request->validate([
 
-        //     'id_trans'=> 'required',
-        //     'nama_printing'=> 'required',
-        //     'total'=> 'required',
-        //     'id_asisten'=> 'required'
-                      
-        //   ]);
-    
+             'kustomer'=> 'required',
+             'total'=> 'required',
+             'id_asisten'=> 'required'
+                     
+           ]);
             $transaksi = new Transaksi();
             
-            $transaksi->nama_printing = $request->input('nama_printing');
+            $transaksi->kustomer = $request->input('kustomer');
             $transaksi->total = $request->input('total');
             $transaksi->id_asisten = $request->input('id_asisten');
-            
-           
-            $transaksi->save();
+            $transaksi->pembayaran = $request->input('pembayaran');
+            $transaksi->hitam = $request->input('hitam');
+            $transaksi->warna = $request->input('warna'); 
+            $transaksi->save(); // supaya dapat berapa transaksi id
+
+            if ($request->input('selisih') > 0) {
+
+                $hutang = new Hutang();
+                $hutang->jumlah_hutang = $request->input('selisih');
+                $hutang->id_trans = $transaksi->id;
+                $hutang->Status = "belum";
+                $hutang->save();
+            }
 
             return redirect()->route('transaksi.index');
+            
     }
 
     /**
@@ -101,9 +109,13 @@ class TransaksiController extends Controller
      * @param  \App\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transaksi $transaksi)
+    public function update(Request  $request, $id)
     {
-        //
+        $cari = Hutang::where('id_hutang', $id);
+        
+        $cari->jumlah_hutang = $request->input('blin');
+        
+        return redirect()->route('transaksi.index');
     }
 
     /**
@@ -112,7 +124,7 @@ class TransaksiController extends Controller
      * @param  \App\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaksi $transaksi)
+    public function destroy($id)
     {
         //
     }
