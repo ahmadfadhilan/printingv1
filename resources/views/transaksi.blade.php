@@ -97,6 +97,9 @@
                         <div class="col-md-4 mb-3">
                             {{ Form::number('warna', 0, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Warna','onchange' => 'sum()' ])}}
                         </div>
+                        <div class="col-md-4 mb-3">
+                          {{ Form::number('kertas', 0, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onchange' => 'sum()' ])}}
+                      </div>
                     </div>
                 </div>
 
@@ -193,7 +196,7 @@
 						<div id="collapse2" class="panel-collapse collapse">
 
 							<form action="" method="post" name="form2">
-								<table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: white; text-align: center">
+								<table class="table table-striped table-bordered table-responsive" border="1" cellpadding="10" cellspacing="0" style="background-color: white; text-align: center">
                       <thead>
                         <tr>
 						              <th>No.</th>
@@ -219,11 +222,11 @@
                             <td>{{ $value->jumlah_hutang }}</td>
                             <td>
                               {{ Form::open(['method' => 'PATCH', 'route' => ['transaksi.update',$value->id_hutang]] ) }}
-                                <div class="form-row">
+                               <div class="form-row">
                                   <div class="col-md-8">
-                                    {{ Form::text('blin', 0, ['id' => 'blin','class' => 'form-control']) }}
-                                    {{ Form::text('d_total', $value->jumlah_hutang, ['id' => 'd_total',]) }} 
-                                    {{ Form::text('d_pay', $value->jumlah_hutang, ['id' => 'd_pay','class' => 'form-control','onkeyup' => 'repay()']) }} 
+                                    {{ Form::text('blin', 0, ['id' => 'blin_'.$value->id_hutang,'class' => 'form-control']) }}
+                                    {{ Form::text('d_total', $value->jumlah_hutang, ['id' => 'd_total_'.$value->id_hutang, 'class' => 'form-control']) }} 
+                                    {{ Form::text('d_pay', $value->jumlah_hutang, ['id' => 'd_pay_'.$value->id_hutang,'class' => 'form-control','onkeyup' => 'repay('.$value->id_hutang.')']) }} 
                                   </div>
                                   <div class="col-md-4">
                                     {{ Form::submit('Bayar', ['class' => 'btn btn-primary form-control'])}}
@@ -328,12 +331,14 @@
     document.getElementById("selisih").value = z;
 }
 
-function repay(){
-    var x = document.getElementById("d_total").value;
-    var y = document.getElementById("d_pay").value;
+function repay(id){
+
+    console.log(id);
+    var x = document.getElementById("d_total_"+id).value;
+    var y = document.getElementById("d_pay_"+id).value;
     var z = x-y;
 
-    document.getElementById("blin").value = z;
+    document.getElementById("blin_"+id).value = z;
 }
 
 </script>

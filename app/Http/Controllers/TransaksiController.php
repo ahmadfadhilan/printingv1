@@ -70,7 +70,7 @@ class TransaksiController extends Controller
             if ($request->input('selisih') > 0) {
 
                 $hutang = new Hutang();
-                $hutang->jumlah_hutang = $request->input('selisih');
+                $hutang->jumlah_hutang = $request->get('selisih');
                 $hutang->id_trans = $transaksi->id;
                 $hutang->Status = "belum";
                 $hutang->save();
@@ -111,9 +111,11 @@ class TransaksiController extends Controller
      */
     public function update(Request  $request, $id)
     {
-        $cari = Hutang::where('id_hutang', $id);
+        $cari = Hutang::where('id_hutang_'.$id, $id)->first();
         
-        $cari->jumlah_hutang = $request->input('blin');
+        $cari->update([
+            'jumlah_hutang' => $request->input('blin_'.$id)
+        ]);
         
         return redirect()->route('transaksi.index');
     }
