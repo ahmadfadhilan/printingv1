@@ -16,8 +16,9 @@ class CreateTransaksisTable extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->increments('id_trans');
             $table->string('kustomer');
-            $table->string('hitam');
-            $table->string('warna');
+            $table->string('hitam')->nullable()->default(0);
+            $table->string('warna')->nullable()->default(0);
+            $table->string('kertas')->nullable()->default(0);
             $table->integer('total');
             $table->integer('pembayaran');
             $table->integer('id_asisten')->unsigned();

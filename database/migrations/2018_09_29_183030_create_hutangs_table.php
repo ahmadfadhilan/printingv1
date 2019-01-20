@@ -16,7 +16,6 @@ class CreateHutangsTable extends Migration
         Schema::create('hutangs', function (Blueprint $table) {
             $table->increments('id_hutang');
             $table->integer('jumlah_hutang');
-            $table->string('status');
             $table->integer('id_trans')->unsigned();
             $table->timestamps();
 

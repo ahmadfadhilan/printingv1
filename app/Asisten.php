@@ -14,4 +14,8 @@ class Asisten extends Model
     public function transaksi(){
         return $this->hasMany('App\Models\Transaksi');
       }
+    
+    public function mahasiswa(){
+        return $this->belongsTo('App\Models\Mahasiswa');
+    }
 }

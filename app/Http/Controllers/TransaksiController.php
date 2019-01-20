@@ -67,7 +67,7 @@ class TransaksiController extends Controller
             $transaksi->warna = $request->input('warna'); 
             $transaksi->save(); // supaya dapat berapa transaksi id
 
-            if ($request->input('selisih') > 0) {
+            if ($request->input('selisih') < 0) {
 
                 $hutang = new Hutang();
                 $hutang->jumlah_hutang = $request->get('selisih');
@@ -111,6 +111,7 @@ class TransaksiController extends Controller
      */
     public function update(Request  $request, $id)
     {
+        dd($id);
         $cari = Hutang::where('id_hutang_'.$id, $id)->first();
         
         $cari->update([

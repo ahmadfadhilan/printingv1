@@ -79,7 +79,7 @@
                     {{ Form::select('id_asisten', $asisten, null, [ 'class' => 'form-control', 'placeholder' => 'Nama Asisten', 'required'])}}
                 </div>
                 <div class="form-group">
-                    <label for="kustomer">Nama Pelanggan</label>
+                    <label for="kustomer">NIM Pelanggan (nama jika NIM tidak ada)</label>
                     {{ Form::text('kustomer', null, ['class' => 'form-control', 'placeholder' => 'Nama Pelanggan', 'required'])}}
                 </div>
 
@@ -92,28 +92,32 @@
                     <label for="kertas">Jumlah Kertas</label>
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
-                            {{ Form::number('hitam', 0, ['id' =>'hitam' ,'class' => 'form-control','placeholder' => 'Hitam','onchange' => 'sum()' ])}}
+                            {{ Form::number('hitam', null, ['id' =>'hitam' ,'class' => 'form-control','placeholder' => 'Hitam','onchange' => 'sum()','min' => 0 ])}}
                         </div>
                         <div class="col-md-4 mb-3">
-                            {{ Form::number('warna', 0, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Warna','onchange' => 'sum()' ])}}
+                            {{ Form::number('warna', null, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Warna','onchange' => 'sum()','min' => 0  ])}}
                         </div>
                         <div class="col-md-4 mb-3">
-                          {{ Form::number('kertas', 0, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onchange' => 'sum()' ])}}
+                          {{ Form::number('kertas', null, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onchange' => 'sum()','min' => 0  ])}}
                       </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="total">Total Biaya</label>
-                    {{ Form::number('total', 0, ['id' =>'total' ,'class' => 'form-control',])}}
+                    {{ Form::number('total', 0, ['id' =>'total' ,'class' => 'form-control', 'min' => 0 ])}}
                 </div>
 
                 <div class="form-group">
                     <label for="bill">Uang yang di bayar</label>
-                    {{ Form::number('pembayaran', null, ['id' =>'bayar' ,'class' => 'form-control', 'onkeyup' => 'debt()'])}}
-
-                    {{ Form::hidden('selisih', 0, ['id' =>'selisih' ,'class' => 'form-control', ])}}
+                    {{ Form::number('pembayaran', null, ['id' =>'bayar' ,'class' => 'form-control', 'onkeyup' => 'debt()', 'min' => 0 ])}}
                 </div>
+
+                <div class="form-group">
+                    <label for="selisih">Kembalian</label>
+                    {{ Form::text('selisih', 0, ['id' =>'selisih' ,'class' => 'form-control', 'readonly' ])}}
+                </div>
+
                 <div class="form-group">
                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Simpan</button>
                 </div>
@@ -130,8 +134,7 @@
         <h2 class="text-center"> <a class="text-center text-uppercase text-white" data-toggle="collapse" href="#collapse1">Transaksi Hari Ini</a></h2>
         <hr class="star-light mb-5">
         <div class="container">
-    				
-    					
+    									
 		    			<h1 style="color: white" >Tabel Transaksi</h1>
 		    			<div id="collapse1" class="panel-collapse collapse">
 		    				
@@ -143,6 +146,7 @@
                         <th>Nama Asisten</th>
                         <th>Hitam</th>
                         <th>Warna</th>
+                        <th>Kertas Kosong</th>
 					              <th>Total Biaya</th>
                         <th>Uang yang Dibayar</th>
                         <th>status</th>
@@ -158,8 +162,25 @@
     					              <td>{{ $transaksi->id_trans }}</td>         
                             <td>{{ $transaksi->kustomer}}</td>
                             <td>{{ $asisten[$transaksi->id_asisten]}}</td>
-                            <td>{{$transaksi->hitam}}</td>
-                            <td>{{$transaksi->warna}}</td> 
+
+                            @if ($transaksi->hitam == null)
+                              <td>{{0}}</td>
+                            @else  
+                              <td>{{$transaksi->hitam}}</td>
+                            @endif
+
+                            @if ($transaksi->warna == null)
+                              <td>{{0}}</td>
+                            @else
+                              <td>{{$transaksi->warna}}</td>
+                            @endif
+                            
+                            @if ($transaksi->kertas == null)
+                              <td>{{0}}</td>
+                            @else
+                              <td>{{$transaksi->kertas}}</td>
+                            @endif
+
     					              <td>{{ $transaksi->total }}</td>
                             <td>{{ $transaksi->pembayaran }}</td>
                             <td>
@@ -177,7 +198,6 @@
 			    			</table>
 
 		    			</div>
-
     				
     			</div>
         
@@ -221,7 +241,7 @@
                             <td>{{ $value->warna }}</td>
                             <td>{{ $value->jumlah_hutang }}</td>
                             <td>
-                              {{ Form::open(['method' => 'PATCH', 'route' => ['transaksi.update',$value->id_hutang]] ) }}
+                              {!! Form::model($value, ['route' => ['transaksi.update',$value->id_hutang], 'method' => 'PATCH'] ) !!}
                                <div class="form-row">
                                   <div class="col-md-8">
                                     {{ Form::text('blin', 0, ['id' => 'blin_'.$value->id_hutang,'class' => 'form-control']) }}
@@ -232,7 +252,7 @@
                                     {{ Form::submit('Bayar', ['class' => 'btn btn-primary form-control'])}}
                                   </div>
                                 </div>
-                              {{ Form::close() }}
+                              {!! Form::close() !!}
                             </td>
                           </tr>  	
                         @endforeach
@@ -299,35 +319,39 @@
   function sum(){
   var x = document.getElementById("hitam").value;
   var y = document.getElementById("warna").value;
+  var m = 0;
+  var z = 0;
+  var n = 0;
 
-
-  var m = parseInt(x);
-  var n = parseInt(y);
-
-  if(document.getElementById("diskon").checked == true){
-    var z = m*300 + n*500;
+  if(x!=null && !isNaN(parseInt(x))){
+    m = parseInt(x);
   }
 
-  else {
-    var z = m*500 + n*1000;
+  if(y!=null && !isNaN(parseInt(y))){
+    n = parseInt(y);
+  }
+
+  if(document.getElementById("diskon").checked==true){
+      z = m*300 + n *500;
+  }
+  else{
+      z = m*500 + n*1000;
   }
 
   document.getElementById("total").value = z;
   document.getElementById("bayar").value = z;
 }
 
+
   function debt(){
     var x = document.getElementById("total").value;
     var y = document.getElementById("bayar").value;
     var z = y-x;
 
-    if (z < 0) {
-      z= -z;
-    } 
+    // if (z < 0) {
+    //   z= 0;
+    // } 
 
-    else{
-      z= 0;
-    }
     document.getElementById("selisih").value = z;
 }
 
