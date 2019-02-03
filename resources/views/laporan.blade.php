@@ -8,14 +8,6 @@
 
     $end_year = Carbon::now()->endOfYear();     
     $str_year = Carbon::now()->startOfYear();     
-
-    var_dump($end_month);
-    var_dump($str_month);
-    var_dump($end_week);
-    var_dump($str_week);
-    var_dump($end_year);
-    var_dump($str_year);
-    
 @endphp
 
 <!DOCTYPE html>
@@ -36,9 +28,10 @@
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-
+  
     <!-- Plugin CSS -->
     <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
 
     <!-- Custom styles for this template -->
     <link href="css/freelancer.min.css" rel="stylesheet">
@@ -141,7 +134,7 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Harian</h2>
               <hr class="star-dark mb-5">
-                <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+                <table id="table1" class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -178,7 +171,7 @@
                     @endforeach
                   </tbody>            
                 </table>
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
@@ -199,7 +192,7 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Mingguan</h2>
               <hr class="star-dark mb-5">
-              <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+              <table id="table2" class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -238,7 +231,7 @@
                     @endforeach
                   </tbody>            
                 </table>
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
@@ -259,7 +252,7 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Bulanan</h2>
               <hr class="star-dark mb-5">
-              <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+              <table id="table3" class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -298,7 +291,7 @@
                     @endforeach
                   </tbody>            
                 </table>
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
@@ -319,7 +312,7 @@
             <div class="col-lg-8 mx-auto">
               <h2 class="text-secondary text-uppercase mb-0">Laporan Tahunan</h2>
               <hr class="star-dark mb-5">
-              <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
+              <table id="table4"class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center; color:aliceblue">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -358,7 +351,7 @@
                     @endforeach
                   </tbody>            
                 </table>
-              <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia neque assumenda ipsam nihil, molestias magnam, recusandae quos quis inventore quisquam velit asperiores, vitae? Reprehenderit soluta, eos quod consequuntur itaque. Nam.</p>
+              
               <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
                 <i class="fa fa-close"></i>
                 Close Project</a>
@@ -367,21 +360,47 @@
         </div>
       </div>
     </div>
-    
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
+<!-- Plugin JavaScript -->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 
-    <!-- Custom scripts for this template -->
-    <script src="js/freelancer.min.js"></script>
+<!-- Contact Form JavaScript -->
+<script src="js/jqBootstrapValidation.js"></script>
+<script src="js/contact_me.js"></script>
+
+<!-- Custom scripts for this template -->
+<script src="js/freelancer.min.js"></script>
+
+{{-- Data Table Plugin adn Script --}}
+<script src="{{asset('jquery-3.3.1.js')}}"></script>
+<script type="text/javascript" src="{{asset('datatables.min.js')}}"></script>
+
+<script>
+$(document).ready(function() {
+  $('#table1').DataTable();
+} );
+</script>
+<script>
+    $(document).ready(function() {
+      $('#table2').DataTable();
+    } );
+    </script><script>
+$(document).ready(function() {
+  $('#table3').DataTable();
+} );
+</script><script>
+$(document).ready(function() {
+  $('#table4').DataTable();
+} );
+</script>
+{{--End  --}}
+
+<script src=" {{asset('notify.js')}} "></script>
 
   </body>
 

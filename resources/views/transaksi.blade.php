@@ -17,10 +17,10 @@
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-
+  
     <!-- Plugin CSS -->
     <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css">
-
+    <link rel="stylesheet" type="text/css" href="{{asset('datatables.min.css')}}"/>
     <!-- Custom styles for this template -->
     <link href="css/freelancer.min.css" rel="stylesheet">
 
@@ -65,7 +65,7 @@
       </div>
     </header>
 
-    <!-- Portfolio Grid Section -->
+    <!-- Transaksi Printing Section -->
     <section class="portfolio" id="portfolio">
       <div class="container">
         <h2 class="text-center text-uppercase text-secondary mb-0">Transaksi <i>Printing</i> </h2>
@@ -80,37 +80,37 @@
                 </div>
                 <div class="form-group">
                     <label for="kustomer">NIM Pelanggan (nama jika NIM tidak ada)</label>
-                    {{ Form::text('kustomer', null, ['class' => 'form-control', 'placeholder' => 'Nama Pelanggan', 'required'])}}
+                    {{ Form::text('kustomer', null, ['class' => 'form-control', 'placeholder' => 'Nama Pelanggan', 'required', 'id' => 'kustomer'])}}
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="display: none">
                     <label for="diskon">Asisten</label>
-                    <input type="checkbox" class="form-control" id="diskon" name="diskon" onchange="sum()" style="height: 30px; width: 30px">
+                    <input type="checkbox" class="form-control" id="diskon" name="diskon" onchange="sum()" style="height: 30px; width: 30px;">
                 </div>
 
                 <div class="form-group">
                     <label for="kertas">Jumlah Kertas</label>
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
-                            {{ Form::number('hitam', null, ['id' =>'hitam' ,'class' => 'form-control','placeholder' => 'Hitam','onchange' => 'sum()','min' => 0 ])}}
+                            {{ Form::number('hitam', null, ['id' =>'hitam' ,'class' => 'form-control','placeholder' => 'Hitam','onkeyup' => 'sum()','min' => 0 ])}}
                         </div>
                         <div class="col-md-4 mb-3">
-                            {{ Form::number('warna', null, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Warna','onchange' => 'sum()','min' => 0  ])}}
+                            {{ Form::number('warna', null, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Warna','onkeyup' => 'sum()','min' => 0  ])}}
                         </div>
                         <div class="col-md-4 mb-3">
-                          {{ Form::number('kertas', null, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onchange' => 'sum()','min' => 0  ])}}
+                          {{ Form::number('kertas', null, ['id' =>'kertas' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onkeyup' => 'sum()','min' => 0  ])}}
                       </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="total">Total Biaya</label>
-                    {{ Form::number('total', 0, ['id' =>'total' ,'class' => 'form-control', 'min' => 0 ])}}
+                    {{ Form::number('total', 0, ['id' =>'total' ,'class' => 'form-control', 'min' => 0, 'readonly' ])}}
                 </div>
 
                 <div class="form-group">
                     <label for="bill">Uang yang di bayar</label>
-                    {{ Form::number('pembayaran', null, ['id' =>'bayar' ,'class' => 'form-control', 'onkeyup' => 'debt()', 'min' => 0 ])}}
+                    {{ Form::number('pembayaran', null, ['id' =>'bayar' ,'class' => 'form-control', 'onkeyup' => 'debt()', "onkeypress" => "if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;", 'min' => 0 ])}}
                 </div>
 
                 <div class="form-group">
@@ -119,7 +119,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Simpan</button>
+                    <button id="button1" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Simpan</button>
                 </div>
     		</div>
     	</div>
@@ -128,7 +128,7 @@
       </div>
     </section>
 
-    <!-- About Section -->
+    <!-- Transaksi Hari Ini Section -->
     <section class="bg-primary text-white mb-0" id="about">
       <div class="container">
         <h2 class="text-center"> <a class="text-center text-uppercase text-white" data-toggle="collapse" href="#collapse1">Transaksi Hari Ini</a></h2>
@@ -138,7 +138,7 @@
 		    			<h1 style="color: white" >Tabel Transaksi</h1>
 		    			<div id="collapse1" class="panel-collapse collapse">
 		    				
-                <table class="table table-striped table-bordered" border="1" cellpadding="10" cellspacing="0" style="background-color: black; text-align: center">
+                <table id="t_trans" class="table table-striped table-bordered display" border="1" cellpadding="10" cellspacing="0" style="width:100%; background-color: white; color:black">
 			    				             <thead>
                       <tr>
 					              <th>No.</th>
@@ -147,6 +147,7 @@
                         <th>Hitam</th>
                         <th>Warna</th>
                         <th>Kertas Kosong</th>
+                        <th>Waktu Transaksi</th>
 					              <th>Total Biaya</th>
                         <th>Uang yang Dibayar</th>
                         <th>status</th>
@@ -157,7 +158,7 @@
 
                       <?php use Carbon\Carbon; ?> 
                       @foreach($transaksi as $transaksi)
-                        @if($transaksi->created_at->ToDateString() ==  Carbon::today('Asia/Jakarta')->ToDateString())
+                        @if($transaksi->created_at->ToDateString() ==  Carbon::today('Asia/Jakarta')->ToDateString(''))
                           <tr>
     					              <td>{{ $transaksi->id_trans }}</td>         
                             <td>{{ $transaksi->kustomer}}</td>
@@ -181,13 +182,14 @@
                               <td>{{$transaksi->kertas}}</td>
                             @endif
 
+                            <td> {{$transaksi->created_at->format('h:i:s A')}} </td>
     					              <td>{{ $transaksi->total }}</td>
                             <td>{{ $transaksi->pembayaran }}</td>
                             <td>
-                              @if ($transaksi->pembayran < $transaksi->total)
-                                  Lunas
-                              @else
+                              @if ($transaksi->pembayaran < $transaksi->total)
                                   Belum Lunas
+                              @else
+                                  Lunas
                               @endif
                             </td>
                           </tr>
@@ -204,7 +206,7 @@
       </div>
     </section>
 
-    <!-- Contact Section -->
+    <!-- Utang Section -->
     <section id="contact">
       <div class="container">
         <h2 class="text-center"><a class="text-center text-uppercase text-secondary mb-0" data-toggle="collapse" href="#collapse2">Pembayaran Hutang</a></h2>
@@ -215,54 +217,83 @@
 						<h1>Tabel Pembayaran Hutang</h1>
 						<div id="collapse2" class="panel-collapse collapse">
 
-							<form action="" method="post" name="form2">
-								<table class="table table-striped table-bordered table-responsive" border="1" cellpadding="10" cellspacing="0" style="background-color: white; text-align: center">
+								<table id="t_hutang" class="table table-striped table-bordered  display" border="1" cellpadding="10" cellspacing="0" style=" width:100%; background-color:white; text-align: center">
                       <thead>
                         <tr>
 						              <th>No.</th>
-						              <th>Nama Konsumen</th>
+                          <th>Nama Konsumen</th>
 						              <th>Nama Asisten</th>
                           <th>tanggal Berhutang</th>
                           <th>hitam</th>
                           <th>warna</th>
+                          <th>Kertas Kosong</th>
 						              <th>Total Hutang</th>
 						              <th>Pelunasan Hutang</th>
 						            </tr>
                       </thead>
 
-                      <tbody id="table">
+                      <tbody>
                         @foreach($hutang as $value)
                           <tr>  
                             <td>{{ $value->id_hutang }}</td>
                             <td>{{ $value->kustomer }}</td>
-                            <td>{{ $value->nama }}</td>
+                            <td></td>
                             <td>{{ $value->updated_at}}</td>
                             <td>{{ $value->hitam }}</td>
                             <td>{{ $value->warna }}</td>
+                            <td>{{ $value->kertas }}</td>
                             <td>{{ $value->jumlah_hutang }}</td>
                             <td>
-                              {!! Form::model($value, ['route' => ['transaksi.update',$value->id_hutang], 'method' => 'PATCH'] ) !!}
-                               <div class="form-row">
-                                  <div class="col-md-8">
-                                    {{ Form::text('blin', 0, ['id' => 'blin_'.$value->id_hutang,'class' => 'form-control']) }}
-                                    {{ Form::text('d_total', $value->jumlah_hutang, ['id' => 'd_total_'.$value->id_hutang, 'class' => 'form-control']) }} 
-                                    {{ Form::text('d_pay', $value->jumlah_hutang, ['id' => 'd_pay_'.$value->id_hutang,'class' => 'form-control','onkeyup' => 'repay('.$value->id_hutang.')']) }} 
-                                  </div>
-                                  <div class="col-md-4">
-                                    {{ Form::submit('Bayar', ['class' => 'btn btn-primary form-control'])}}
-                                  </div>
-                                </div>
-                              {!! Form::close() !!}
+                              <div>
+                                {{ Form::button('Bayar', ['class' => 'btn btn-info form-control', 'data-toggle' => 'modal', 'data-target' => '#someModal_'.$value->id_hutang]) }}
+                              </div>
+                              
+                                  <!-- Modal -->
+                                {!! Form::model($value, ['route' => ['transaksi.update', $value->id_hutang], 'method' => 'PUT'] ) !!} 
+                                <div id="someModal_{{$value->id_hutang}}" class="modal fade" role="dialog">
+                                  <div class="modal-dialog">  
+                                    <!-- Modal content-->
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Pembayaran Hutang</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                              <div class="form-group">
+                                                  <label for="id_asisten">Nama Asisten</label>
+                                                  {{ Form::select('d_asisten', $asisten, null, [ 'id' => 'd_asisten','class' => 'form-control', 'placeholder' => 'Nama Asisten', 'required'])}}
+                                              </div>
+                                              
+                                              <div class="form-group">
+                                                <label for="">Total Hutang</label>
+                                                {{ Form::text('d_total', $value->jumlah_hutang, ['id' => 'd_total_'.$value->id_hutang, 'class' => 'form-control', 'readonly']) }} 
+                                              </div>
+                                              
+                                              <div class="form-group">
+                                                  <label for="">Sisa Hutang</label>
+                                                  {{ Form::text('sisa', $value->jumlah_hutang, ['id' => 'sisa_'.$value->id_hutang,'class' => 'form-control', 'readonly']) }}
+                                              </div>
+
+                                              <div class="form-group">
+                                                <label for="">Uang Angsuran</label>
+                                                {{ Form::text('d_pay', null, ['id' => 'd_pay_'.$value->id_hutang,'class' => 'form-control','onkeyup' => 'repay('.$value->id_hutang.')', "onkeypress" => "if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;", 'required']) }} 
+                                              </div>
+
+                
+                                            </div>
+                                            <div class="modal-footer">
+                                              {{ Form::submit('Bayar', ['class' => 'btn btn-primary form-control'])}}
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                  {!! Form::close() !!}           
                             </td>
                           </tr>  	
                         @endforeach
                       </tbody>
-                      				            
-                   	            
-								</table>
+                </table>
 							</form>
 						</div>
-
     				</div>
     			</div>
         
@@ -300,28 +331,40 @@
     <!-- Custom scripts for this template -->
     <script src="js/freelancer.min.js"></script>
 
+    {{-- Data Table Plugin adn Script --}}
+  <script src="{{asset('jquery-3.3.1.js')}}"></script>
+  <script type="text/javascript" src="{{asset('datatables.min.js')}}"></script>
+  <script>
+      $(document).ready(function() {
+        $('#t_trans').DataTable();
+      } );
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#t_hutang').DataTable();
+    } );
+  </script>
+    {{--End  --}}
+
+    <script src=" {{asset('notify.js')}} "></script>
+    
+
   </body>
 
 </html>
 
-@push('javascript')
-<script>
-    function confirmLunas(url){
-        if(confirm('Anda yakin akan menyelesaikan pembayaran user ini? ')){
-            $hutang->status = 'sudah';
-        }
-    }
-</script>
-@endpush
 
 <!--  Script Penjumlahan Transaksi -->
 <script>
+
   function sum(){
+  var w = document.getElementById("kertas").value;  
   var x = document.getElementById("hitam").value;
   var y = document.getElementById("warna").value;
   var m = 0;
   var z = 0;
   var n = 0;
+  var o = 0;
 
   if(x!=null && !isNaN(parseInt(x))){
     m = parseInt(x);
@@ -331,11 +374,15 @@
     n = parseInt(y);
   }
 
+  if(y!=null && !isNaN(parseInt(y))){
+    o = parseInt(w);
+  }
+
   if(document.getElementById("diskon").checked==true){
-      z = m*300 + n *500;
+      z = m*300 + n *500 + w*100;
   }
   else{
-      z = m*500 + n*1000;
+      z = m*500 + n*1000 + w*100;
   }
 
   document.getElementById("total").value = z;
@@ -360,9 +407,24 @@ function repay(id){
     console.log(id);
     var x = document.getElementById("d_total_"+id).value;
     var y = document.getElementById("d_pay_"+id).value;
-    var z = x-y;
+    var z = +x - +y;
 
-    document.getElementById("blin_"+id).value = z;
+    document.getElementById("sisa_"+id).value = z;
 }
-
 </script>
+
+<script>
+<?= "let nim = $nim;" ?>
+
+$('#kustomer').keyup(function(){
+	let a = $('#kustomer').val();
+	for(let i = 0; i<nim.length; i++){
+		if(a == nim[i]){
+			$('#diskon').prop('checked', true);
+			sum();
+            return 0;
+		}
+    }		
+    $('#diskon').prop('checked', false);
+	sum();
+});

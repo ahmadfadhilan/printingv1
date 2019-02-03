@@ -15,11 +15,10 @@ class CreateAsistensTable extends Migration
     {
         Schema::create('asistens', function (Blueprint $table) {
             $table->increments('id_asisten');
-            $table->unsignedInteger('id_mhs');
+            $table->String('nim',12);
             $table->integer('no_anggota')->nullable();
-            $table->string('qr_pass')->nullable();
 
-            $table->foreign('id_mhs')->references('id_mhs')->on('mahasiswas');
+            $table->foreign('nim')->references('nim')->on('mahasiswas');
         });
     }
 

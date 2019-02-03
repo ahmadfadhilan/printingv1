@@ -27,7 +27,12 @@ class LaporanController extends Controller
 
         $transaksi = Transaksi::all();
 
-        $asisten = Asisten::pluck('nama','id_asisten');
+        $db_asisten = DB::table('asistens')
+        ->join('mahasiswas', 'mahasiswas.nim', '=', 'asistens.nim')
+        ->select('mahasiswas.nama','asistens.*')
+        ->get();
+         
+        $asisten = $db_asisten->pluck('nama','id_asisten');
         return view('laporan', ['transaksi'=> $transaksi,'transaksi_2'=> $transaksi,'transaksi_3'=> $transaksi,'transaksi_4'=> $transaksi,], compact('hutang','asisten'));
     }
 

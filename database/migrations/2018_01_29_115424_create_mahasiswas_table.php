@@ -15,14 +15,16 @@ class CreateMahasiswasTable extends Migration
     {
         Schema::create('mahasiswas', function (Blueprint $table) {
             $table->increments('id_mhs');
-            $table->integer('nim')->unique();
+            $table->String('nim',12)->unique();
             $table->string('username')->nullable();
             $table->string('nama');
             $table->string('password')->nullable();
             $table->mediumText('alamat')->nullable();
             $table->string('email')->nullable();
             $table->string('no_telp')->nullable();
+            $table->string('avatar')->nullable();
             $table->string('foto')->nullable();
+            $table->string('qr_pass')->nullable();
             $table->timestamps();
         });
     }

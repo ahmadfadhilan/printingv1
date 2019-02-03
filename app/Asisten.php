@@ -10,12 +10,13 @@ class Asisten extends Model
         'NIM',
         'nama'
     ];
-
-    public function transaksi(){
-        return $this->hasMany('App\Models\Transaksi');
-      }
     
     public function mahasiswa(){
         return $this->belongsTo('App\Models\Mahasiswa');
     }
+    
+    public function transaksi(){
+        return $this->hasMany('App\Models\Transaksi');
+    }
+    
 }
