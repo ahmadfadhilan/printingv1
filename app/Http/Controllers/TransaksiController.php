@@ -34,7 +34,6 @@ class TransaksiController extends Controller
         $asisten = $db_asisten->pluck('nama','id_asisten');
         $nim = $db_asisten->pluck('nim');
         
-        
         // dd($hutang);
         return view('transaksi', ['transaksi'=> $transaksi, 'hutang' => $hutang], compact('hutang','asisten','nim'));
         

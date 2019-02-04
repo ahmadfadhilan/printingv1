@@ -89,6 +89,11 @@
                 </div>
 
                 <div class="form-group">
+                  <label for="sendiri">Pakai Kertas Sendiri</label>
+                  <input type="checkbox" class="form-control" id="sendiri" name="sendiri" onclick="sum()" style="height: 30px; width: 30px;">
+              </div>
+
+                <div class="form-group">
                     <label for="kertas">Jumlah Kertas</label>
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
@@ -365,6 +370,7 @@
   var z = 0;
   var n = 0;
   var o = 0;
+  var p = 0;
 
   if(x!=null && !isNaN(parseInt(x))){
     m = parseInt(x);
@@ -380,10 +386,22 @@
 
   if(document.getElementById("diskon").checked==true){
       z = m*300 + n *500 + w*100;
+      // if(document.getElementById("sendiri").checked==true){
+      //   p = m + n;
+      //   z = z - p*100;
+      // }
   }
   else{
       z = m*500 + n*1000 + w*100;
+      // if(document.getElementById("sendiri").checked==true){
+      //   p = m + n;
+      //   z = z - p*100;
+      // }
   }
+  if(document.getElementById("sendiri").checked==true){
+        p = m + n;
+        z = z - p*100;
+      }
 
   document.getElementById("total").value = z;
   document.getElementById("bayar").value = z;
@@ -419,12 +437,13 @@ function repay(id){
 $('#kustomer').keyup(function(){
 	let a = $('#kustomer').val();
 	for(let i = 0; i<nim.length; i++){
-		if(a == nim[i]){
-			$('#diskon').prop('checked', true);
-			sum();
-            return 0;
-		}
-    }		
-    $('#diskon').prop('checked', false);
-	sum();
+      if(a == nim[i]){
+        $('#diskon').prop('checked', true);
+        sum();
+        return 0;
+      }
+  }	
+  $('#diskon').prop('checked', false);
+  sum();
 });
+</script>
