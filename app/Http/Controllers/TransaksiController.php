@@ -129,36 +129,27 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $hutang = DB::table('hutangs')
-        ->join('transaksis', 'transaksis.id_trans', '=', 'hutangs.id_trans')
-        ->join('asistens', 'transaksis.id_asisten', '=', 'asistens.id_asisten')
-        ->where('id_hutang', $id);
-        // // $test = $hutang->pluck('hitam','warna','kertas');
-        // dd($hutang->pluck('kustomer')->first());
-        
-        $transaksi = new Transaksi();
+        $hutang = Hutang::where('id_hutang', $id)->first();
+        $transaksi = Transaksi::where('id_trans' ,$hutang->id_trans)->first();
 
-            $transaksi->kustomer = $hutang->pluck('kustomer')->first();    
-            $transaksi->total = $request->input('d_total');
-            $transaksi->id_asisten = $request->input('d_asisten');
-            $transaksi->pembayaran = $request->input('d_pay');
-            $transaksi->hitam = $hutang->pluck('hitam')->first();
-            $transaksi->warna = $hutang->pluck('warna')->first();
-            $transaksi->kertas = $hutang->pluck('kertas')->first(); 
-            $transaksi->save();
+        $transaksi->pembayaran = $transaksi->pembayaran + $request->input('d_pay');
+        $transaksi->update();
+
+        $transaksi->pembayaran = $transaksi->pembayaran + $request->input('d_pay');
+        $transaksi->id_asisten = $request->input('d_asisten');
+        $transaksi->update();
 
         if ($request->input('sisa') > 0) {
-        $hutang->update([
-            'jumlah_hutang' => $request->input('sisa')]);
+            $hutang->jumlah_hutang = $request->input('sisa');
+            $hutang->update();
             return redirect()->route('transaksi.index');
         }
         else {
             $hutang->delete();
-            // dd($hutang);
             return redirect()->route('transaksi.index');
         }
-
     }
+    
 
     /**
      * Remove the specified resource from storage.

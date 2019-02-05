@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
+    protected $primaryKey = 'id_trans';
     protected $fillable = [
         'id_trans',
         'nama_printing',
