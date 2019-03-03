@@ -86,8 +86,8 @@
                 </div>
 
                 <div class="form-group" >
-                    <label for="diskon">Asisten</label>
-                    <input type="checkbox" class="form-control" id="diskon" name="diskon" onchange="sum()" style="height: 30px; width: 30px;">
+                    <label for="diskon" style="display: none">Asisten</label>
+                    <input type="checkbox" class="form-control" id="diskon" name="diskon" onchange="sum()" style="height: 30px; width: 30px; display: none">
                 </div>
 
                 <div class="form-group">
@@ -105,14 +105,14 @@
                             {{ Form::number('warna', null, ['id' =>'warna' ,'class' => 'form-control','placeholder' => 'Warna','onkeyup' => 'sum()','min' => 0  ])}}
                         </div>
                         <div class="col-md-4 mb-3">
-                          {{ Form::number('kertas', null, ['id' =>'kertas' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onkeyup' => 'sum()','min' => 0  ])}}
+                          {{ Form::number('kertas', null, ['id' =>'kertas' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onkeyup' => 'sum()','min' => 0,])}}
                       </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="gratis">Gratis Asisten</label>
-                    {{ Form::number('gratis', 0, ['id' =>'gratis' ,'class' => 'form-control', 'min' => 0, 'readonly' ])}}
+                    <label for="gratis" style="display: none">Gratis Asisten</label>
+                    {{ Form::hidden('gratis', 0, ['id' =>'gratis' ,'class' => 'form-control', 'min' => 0, 'readonly',])}}
                 </div>
 
                 <div class="form-group">
