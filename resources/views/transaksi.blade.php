@@ -1,3 +1,4 @@
+<?php use Carbon\Carbon; ?> 
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +10,7 @@
     <meta name="author" content="">
 
     <title>Transaksi Printing </title>
+    <link rel="icon" href="{{asset('img/lea-logo.png')}}" type="image/x-icon">
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -83,7 +85,7 @@
                     {{ Form::text('kustomer', null, ['class' => 'form-control', 'placeholder' => 'Nama Pelanggan', 'required', 'id' => 'kustomer'])}}
                 </div>
 
-                <div class="form-group" style="display: none">
+                <div class="form-group" >
                     <label for="diskon">Asisten</label>
                     <input type="checkbox" class="form-control" id="diskon" name="diskon" onchange="sum()" style="height: 30px; width: 30px;">
                 </div>
@@ -106,6 +108,11 @@
                           {{ Form::number('kertas', null, ['id' =>'kertas' ,'class' => 'form-control','placeholder' => 'Kertas Kosong','onkeyup' => 'sum()','min' => 0  ])}}
                       </div>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gratis">Gratis Asisten</label>
+                    {{ Form::number('gratis', 0, ['id' =>'gratis' ,'class' => 'form-control', 'min' => 0, 'readonly' ])}}
                 </div>
 
                 <div class="form-group">
@@ -161,44 +168,43 @@
 
                                 <tbody>
 
-                      <?php use Carbon\Carbon; ?> 
-                      @foreach($transaksi as $transaksi)
-                        @if($transaksi->created_at->ToDateString() ==  Carbon::today('Asia/Jakarta')->ToDateString(''))
+                      @foreach($printing as $value)
+                        {{-- @if($value->created_at->ToDateString() ==  Carbon::today('Asia/Jakarta')->ToDateString('')) --}}
                           <tr>
-    					              <td>{{ $transaksi->id_trans }}</td>         
-                            <td>{{ $transaksi->kustomer}}</td>
-                            <td>{{ $asisten[$transaksi->id_asisten]}}</td>
+    					              <td>{{ $value->id }}</td>         
+                            <td>{{ $value->kustomer}}</td>
+                            <td>{{ $asisten[$value->id_asisten]}}</td>
 
-                            @if ($transaksi->hitam == null)
+                            @if ($value->hitam == null)
                               <td>{{0}}</td>
                             @else  
-                              <td>{{$transaksi->hitam}}</td>
+                              <td>{{$value->hitam}}</td>
                             @endif
 
-                            @if ($transaksi->warna == null)
+                            @if ($value->warna == null)
                               <td>{{0}}</td>
                             @else
-                              <td>{{$transaksi->warna}}</td>
+                              <td>{{$value->warna}}</td>
                             @endif
                             
-                            @if ($transaksi->kertas == null)
+                            @if ($value->kertas == null)
                               <td>{{0}}</td>
                             @else
-                              <td>{{$transaksi->kertas}}</td>
+                              <td>{{$value->kertas}}</td>
                             @endif
 
-                            <td> {{$transaksi->created_at->format('h:i:s A')}} </td>
-    					              <td>{{ $transaksi->total }}</td>
-                            <td>{{ $transaksi->pembayaran }}</td>
+                            <td> {{$value->created_at->format('h:i:s A')}} </td>
+    					              <td>{{ $value->total }}</td>
+                            <td>{{ $value->pembayaran }}</td>
                             <td>
-                              @if ($transaksi->pembayaran < $transaksi->total)
+                              @if ($value->pembayaran < $value->total)
                                   Belum Lunas
                               @else
                                   Lunas
                               @endif
                             </td>
                           </tr>
-                        @endif
+                        {{-- @endif --}}
                       @endforeach
 
                                 </tbody>            
@@ -240,7 +246,7 @@
                       <tbody>
                         @foreach($hutang as $value)
                           <tr>  
-                            <td>{{ $value->id_hutang }}</td>
+                            <td>{{ $value->id }}</td>
                             <td>{{ $value->kustomer }}</td>
                             <td></td>
                             <td>{{ $value->updated_at}}</td>
@@ -250,12 +256,12 @@
                             <td>{{ $value->jumlah_hutang }}</td>
                             <td>
                               <div>
-                                {{ Form::button('Bayar', ['class' => 'btn btn-info form-control', 'data-toggle' => 'modal', 'data-target' => '#someModal_'.$value->id_hutang]) }}
+                                {{ Form::button('Bayar', ['class' => 'btn btn-info form-control', 'data-toggle' => 'modal', 'data-target' => '#someModal_'.$value->id]) }}
                               </div>
                               
                                   <!-- Modal -->
-                                {!! Form::model($value, ['route' => ['transaksi.update', $value->id_hutang], 'method' => 'PUT'] ) !!} 
-                                <div id="someModal_{{$value->id_hutang}}" class="modal fade" role="dialog">
+                                {!! Form::model($value, ['route' => ['transaksi.update', $value->id], 'method' => 'PUT'] ) !!} 
+                                <div id="someModal_{{$value->id}}" class="modal fade" role="dialog">
                                   <div class="modal-dialog">  
                                     <!-- Modal content-->
                                           <div class="modal-content">
@@ -270,17 +276,17 @@
                                               
                                               <div class="form-group">
                                                 <label for="">Total Hutang</label>
-                                                {{ Form::text('d_total', $value->jumlah_hutang, ['id' => 'd_total_'.$value->id_hutang, 'class' => 'form-control', 'readonly']) }} 
+                                                {{ Form::text('d_total', $value->jumlah_hutang, ['id' => 'd_total_'.$value->id, 'class' => 'form-control', 'readonly']) }} 
                                               </div>
                                               
                                               <div class="form-group">
                                                   <label for="">Sisa Hutang</label>
-                                                  {{ Form::text('sisa', $value->jumlah_hutang, ['id' => 'sisa_'.$value->id_hutang,'class' => 'form-control', 'readonly']) }}
+                                                  {{ Form::text('sisa', $value->jumlah_hutang, ['id' => 'sisa_'.$value->id,'class' => 'form-control', 'readonly']) }}
                                               </div>
 
                                               <div class="form-group">
                                                 <label for="">Uang Angsuran</label>
-                                                {{ Form::text('d_pay', null, ['id' => 'd_pay_'.$value->id_hutang,'class' => 'form-control','onkeyup' => 'repay('.$value->id_hutang.')', "onkeypress" => "if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;", 'required']) }} 
+                                                {{ Form::text('d_pay', null, ['id' => 'd_pay_'.$value->id,'class' => 'form-control','onkeyup' => 'repay('.$value->id.')', "onkeypress" => "if ( isNaN(this.value + String.fromCharCode(event.keyCode) )) return false;", 'required']) }} 
                                               </div>
 
                 
@@ -363,6 +369,7 @@
 <script>
 
   function sum(){
+    console.log(free);
   var w = document.getElementById("kertas").value;  
   var x = document.getElementById("hitam").value;
   var y = document.getElementById("warna").value;
@@ -371,6 +378,7 @@
   var n = 0;
   var o = 0;
   var p = 0;
+  var free = 0;
 
   if(x!=null && !isNaN(parseInt(x))){
     m = parseInt(x);
@@ -386,17 +394,9 @@
 
   if(document.getElementById("diskon").checked==true){
       z = m*300 + n *500 + w*100;
-      // if(document.getElementById("sendiri").checked==true){
-      //   p = m + n;
-      //   z = z - p*100;
-      // }
   }
   else{
       z = m*500 + n*1000 + w*100;
-      // if(document.getElementById("sendiri").checked==true){
-      //   p = m + n;
-      //   z = z - p*100;
-      // }
   }
   if(document.getElementById("sendiri").checked==true){
         p = m + n;
@@ -412,10 +412,6 @@
     var x = document.getElementById("total").value;
     var y = document.getElementById("bayar").value;
     var z = y-x;
-
-    // if (z < 0) {
-    //   z= 0;
-    // } 
 
     document.getElementById("selisih").value = z;
 }

@@ -9,7 +9,8 @@
     <meta name="author" content="">
 
     <title>Home</title>
-
+    <link rel="icon" href="{{asset('img/lea-logo.png')}}" type="image/x-icon">
+    
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 

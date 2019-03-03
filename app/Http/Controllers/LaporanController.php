@@ -1,10 +1,8 @@
 <?php
-
-
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Transaksi;
+use App\Printing;
 use App\Hutang;
 use App\Asisten;
 use Illuminate\Http\Request;
@@ -20,20 +18,22 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        $hutang = DB::table('hutangs')
-        ->join('transaksis', 'transaksis.id_trans', '=', 'hutangs.id_trans')
-        ->join('asistens', 'transaksis.id_asisten', '=', 'asistens.id_asisten')
+        $hutang = DB::table('hutang')
+        ->join('printing', 'printing.id', '=', 'hutang.id_print')
+        ->join('asisten', 'asisten.id', '=', 'printing.id_asisten')
         ->get();
 
-        $transaksi = Transaksi::all();
+        $printing = Printing::all();
 
-        $db_asisten = DB::table('asistens')
-        ->join('mahasiswas', 'mahasiswas.nim', '=', 'asistens.nim')
-        ->select('mahasiswas.nama','asistens.*')
+        $db_asisten = DB::table('asisten')
+        ->join('users', 'users.nim', '=', 'asisten.nim')
+        ->select('users.nama','asisten.*')
         ->get();
          
         $asisten = $db_asisten->pluck('nama','id_asisten');
-        return view('laporan', ['transaksi'=> $transaksi,'transaksi_2'=> $transaksi,'transaksi_3'=> $transaksi,'transaksi_4'=> $transaksi,], compact('hutang','asisten'));
+        // dd($asisnet);
+
+        return view('laporan', ['transaksi_1'=> $printing,'transaksi_2'=> $printing,'transaksi_3'=> $printing,'transaksi_4'=> $printing], compact('asisten'));
     }
 
     /**

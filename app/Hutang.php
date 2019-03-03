@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Hutang extends Model
 {
-  protected $primaryKey = 'id_hutang';
+    protected $table = 'hutang';
+    protected $primaryKey = 'id';
+    
     protected $fillable = [
         'id_hutang',
         'jumlah_hutang',
-        'status',
-        'id_trans'
+        'id_print'
       ];
 
     public function trans(){
-      return $this->belongsTo('App\Models\Transaksi');
+      return $this->belongsTo('App\Models\Printing');
     }
 }

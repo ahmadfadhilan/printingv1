@@ -19,7 +19,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Freelancer - Start Bootstrap Theme</title>
+    <title>Laporan Transaksi Printing</title>
+    <link rel="icon" href="{{asset('img/lea-logo.png')}}" type="image/x-icon">
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -149,18 +150,18 @@
                 </thead>
 
                   <tbody>
-                    @foreach($transaksi as $transaksi)
-                      @if($transaksi->created_at->ToDateString() ==  Carbon::today('Asia/Jakarta')->ToDateString())
+                    @foreach($transaksi_1 as $value)
+                      @if($value->created_at->ToDateString() ==  Carbon::today('Asia/Jakarta')->ToDateString())
                         <tr>
-                          <td>{{ $transaksi->id_trans }}</td>         
-                          <td>{{ $transaksi->kustomer}}</td>
-                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
-                          <td>{{$transaksi->hitam}}</td>
-                          <td>{{$transaksi->warna}}</td> 
-                          <td>{{ $transaksi->total }}</td>
-                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>{{ $value->id }}</td>         
+                          <td>{{ $value->kustomer}}</td>
+                          <td>{{ $asisten[$value->nama]}}</td>
+                          <td>{{$value->hitam}}</td>
+                          <td>{{$value->warna}}</td> 
+                          <td>{{ $value->total }}</td>
+                          <td>{{ $value->pembayaran }}</td>
                           <td>
-                            @if ($transaksi->pembayaran > $transaksi->total)
+                            @if ($value->pembayaran > $value->total)
                                 Lunas
                             @else
                                 Belum Lunas
@@ -208,19 +209,19 @@
                 </thead>
 
                   <tbody>
-                    @foreach($transaksi_2 as $transaksi)
-                      @if($transaksi->created_at <= $end_week && $transaksi->created_at >= $str_week)
+                    @foreach($transaksi_2 as $value)
+                      @if($value->created_at <= $end_week && $value->created_at >= $str_week)
                         <tr>
-                          <td>{{ $transaksi->id_trans }}</td>         
-                          <td>{{ $transaksi->kustomer}}</td>
-                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
-                          <td>{{ $transaksi->created_at->ToDateString() }}</td>
-                          <td>{{$transaksi->hitam}}</td>
-                          <td>{{$transaksi->warna}}</td> 
-                          <td>{{ $transaksi->total }}</td>
-                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>{{ $value->id }}</td>         
+                          <td>{{ $value->kustomer}}</td>
+                          <td>{{ $asisten[$value->nama]}}</td>
+                          <td>{{ $value->created_at->ToDateString() }}</td>
+                          <td>{{$value->hitam}}</td>
+                          <td>{{$value->warna}}</td> 
+                          <td>{{ $value->total }}</td>
+                          <td>{{ $value->pembayaran }}</td>
                           <td>
-                            @if ($transaksi->pembayaran > $transaksi->total)
+                            @if ($value->pembayaran > $value->total)
                                 Lunas
                             @else
                                 Belum Lunas
@@ -268,19 +269,19 @@
                 </thead>
 
                   <tbody>
-                    @foreach($transaksi_3 as $transaksi)
-                      @if($transaksi->created_at <= $end_month && $transaksi->created_at >= $str_month)
+                    @foreach($transaksi_3 as $value)
+                      @if($value->created_at <= $end_month && $value->created_at >= $str_month)
                         <tr>
-                          <td>{{ $transaksi->id_trans }}</td>         
-                          <td>{{ $transaksi->kustomer}}</td>
-                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
-                          <td>{{ $transaksi->created_at->ToDateString() }}</td>
-                          <td>{{$transaksi->hitam}}</td>
-                          <td>{{$transaksi->warna}}</td> 
-                          <td>{{ $transaksi->total }}</td>
-                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>{{ $value->id }}</td>         
+                          <td>{{ $value->kustomer}}</td>
+                          <td>{{ $asisten[$value->nama]}}</td>
+                          <td>{{ $value->created_at->ToDateString() }}</td>
+                          <td>{{$value->hitam}}</td>
+                          <td>{{$value->warna}}</td> 
+                          <td>{{ $value->total }}</td>
+                          <td>{{ $value->pembayaran }}</td>
                           <td>
-                            @if ($transaksi->pembayaran > $transaksi->total)
+                            @if ($value->pembayaran > $value->total)
                                 Lunas
                             @else
                                 Belum Lunas
@@ -328,19 +329,19 @@
                 </thead>
 
                   <tbody>
-                    @foreach($transaksi_4 as $transaksi)
-                      @if($transaksi->created_at <= $end_year && $transaksi->created_at >= $str_year)
+                    @foreach($transaksi_4 as $value)
+                      @if($value->created_at <= $end_year && $value->created_at >= $str_year)
                         <tr>
-                          <td>{{ $transaksi->id_trans }}</td>         
-                          <td>{{ $transaksi->kustomer}}</td>
-                          <td>{{ $asisten[$transaksi->id_asisten]}}</td>
-                          <td>{{ $transaksi->created_at->ToDateString() }}</td>
-                          <td>{{$transaksi->hitam}}</td>
-                          <td>{{$transaksi->warna}}</td> 
-                          <td>{{ $transaksi->total }}</td>
-                          <td>{{ $transaksi->pembayaran }}</td>
+                          <td>{{ $value->id }}</td>         
+                          <td>{{ $value->kustomer}}</td>
+                          <td>{{ $asisten[$value->nama]}}</td>
+                          <td>{{ $value->created_at->ToDateString() }}</td>
+                          <td>{{$value->hitam}}</td>
+                          <td>{{$value->warna}}</td> 
+                          <td>{{ $value->total }}</td>
+                          <td>{{ $value->pembayaran }}</td>
                           <td>
-                            @if ($transaksi->pembayaran > $transaksi->total)
+                            @if ($value->pembayaran > $value->total)
                                 Lunas
                             @else
                                 Belum Lunas

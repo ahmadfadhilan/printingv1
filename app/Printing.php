@@ -4,15 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Transaksi extends Model
+class Printing extends Model
 {
-    protected $primaryKey = 'id_trans';
-    protected $fillable = [
-        'id_trans',
-        'nama_printing',
-        'total',
-        'id_asisten'
-    ];
+    protected $table = 'printing';
+    protected $primaryKey = 'id';
 
     public function asisten(){
         return $this->belongsTo('App\Models\Asisten');

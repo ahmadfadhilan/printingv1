@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Transaksi;
+use App\Printing;
 use App\Hutang;
 use App\Asisten;
 use Illuminate\Http\Request;
@@ -19,23 +19,23 @@ class TransaksiController extends Controller
     public function index()
     {   
 
-        $hutang = DB::table('hutangs')
-        ->join('transaksis', 'transaksis.id_trans', '=', 'hutangs.id_trans')
-        ->join('asistens', 'transaksis.id_asisten', '=', 'asistens.id_asisten')
+        $hutang = DB::table('hutang')
+        ->join('printing', 'printing.id', '=', 'hutang.id_print')
+        ->join('asisten', 'asisten.id', '=', 'printing.id_asisten')
         ->get();
 
-        $transaksi = Transaksi::all();
+        $printing = Printing::all();
 
-        $db_asisten = DB::table('asistens')
-        ->join('mahasiswas', 'mahasiswas.nim', '=', 'asistens.nim')
-        ->select('mahasiswas.nama','asistens.*')
+        $db_asisten = DB::table('asisten')
+        ->join('users', 'users.nim', '=', 'asisten.nim')
+        ->select('users.nama','asisten.*')
         ->get(); 
 
-        $asisten = $db_asisten->pluck('nama','id_asisten');
+        $asisten = $db_asisten->pluck('nama','id');
         $nim = $db_asisten->pluck('nim');
         
         // dd($hutang);
-        return view('transaksi', ['transaksi'=> $transaksi, 'hutang' => $hutang], compact('hutang','asisten','nim'));
+        return view('transaksi', ['printing'=> $printing, 'hutang' => $hutang], compact('hutang','asisten','nim'));
         
     }
 
@@ -67,30 +67,29 @@ class TransaksiController extends Controller
                      
            ]);
            
-           $db_mhs = DB::table('mahasiswas')->get();
+           $db_mhs = DB::table('users')->get();
            $cari = $db_mhs->where('nim', $request->input('kustomer'))->first();
-        //    dd($cari);
-           $transaksi = new Transaksi();
+           $printing = new Printing();
            
            if($cari == true){
-                $transaksi->kustomer = $cari->nama;   
+                $printing->kustomer = $cari->nama;   
             }
             else{
-                $transaksi->kustomer = $request->input('kustomer');
+                $printing->kustomer = $request->input('kustomer');
             }
-            $transaksi->total = $request->input('total');
-            $transaksi->id_asisten = $request->input('id_asisten');
-            $transaksi->pembayaran = $request->input('pembayaran');
-            $transaksi->hitam = $request->input('hitam');
-            $transaksi->warna = $request->input('warna');
-            $transaksi->kertas = $request->input('kertas');
-            $transaksi->save(); // supaya dapat berapa transaksi id
+            $printing->total = $request->input('total');
+            $printing->id_asisten = $request->input('id_asisten');
+            $printing->pembayaran = $request->input('pembayaran');
+            $printing->hitam = $request->input('hitam');
+            $printing->warna = $request->input('warna');
+            $printing->kertas = $request->input('kertas');
+            $printing->save(); // supaya dapat berapa transaksi id
 
             if ($request->input('selisih') < 0) {
 
                 $hutang = new Hutang();
                 $hutang->jumlah_hutang = -$request->get('selisih');
-                $hutang->id_trans = $transaksi->id;
+                $hutang->id_print = $printing->id;
                 $hutang->save();
             }
 
@@ -101,10 +100,10 @@ class TransaksiController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Transaksi  $transaksi
+     * @param  \App\Printing  $printing
      * @return \Illuminate\Http\Response
      */
-    public function show(Transaksi $transaksi)
+    public function show(Printing $printing)
     {
         //
     }
@@ -112,10 +111,10 @@ class TransaksiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Transaksi  $transaksi
+     * @param  \App\Printing  $printing
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaksi $transaksi)
+    public function edit(Printing $printing)
     {
         //
     }
@@ -124,41 +123,39 @@ class TransaksiController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Transaksi  $transaksi
+     * @param  \App\Printing  $printing
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $hutang = Hutang::where('id_hutang', $id)->first();
-        $transaksi = Transaksi::where('id_trans' ,$hutang->id_trans)->first();
+        $hutang = Hutang::where('id', $id)->first();
+        $printing = Printing::where('id' ,$hutang->id_print)->first();
 
-        $transaksi->pembayaran = $transaksi->pembayaran + $request->input('d_pay');
-        $transaksi->update();
-
-        $transaksi->pembayaran = $transaksi->pembayaran + $request->input('d_pay');
-        $transaksi->id_asisten = $request->input('d_asisten');
-        $transaksi->update();
+        $printing->pembayaran = $printing->pembayaran + $request->input('d_pay');
+        $printing->id_asisten = $request->input('d_asisten');
+        $printing->update();
 
         if ($request->input('sisa') > 0) {
             $hutang->jumlah_hutang = $request->input('sisa');
             $hutang->update();
-            return redirect()->route('transaksi.index');
+            return redirect()->back();
         }
         else {
             $hutang->delete();
-            return redirect()->route('transaksi.index');
+            return redirect()->back();
         }
     }
-    
 
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Transaksi  $transaksi
+     * @param  \App\Transaksi  $printing
      * @return \Illuminate\Http\Response
      */
     public function destroy(Hutang $hutang, $id)
     {
         
     }
+
 }
